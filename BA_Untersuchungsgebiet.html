@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karte Untersuchungsgebiet</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* Grundlegendes Design */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        /* Kartenbehälter: Wichtig, damit die Karte sichtbar ist */
+        #mapid {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Untersuchungsgebiet</h1>
+    <p>Die Karte zeigt das konvertierte Polygon (ehemals EPSG:25832) im Bereich Lahr/Schwarzwald.</p>
+    
+    <div id="mapid"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // 1. Karte initialisieren 
+        // Wir setzen die Startansicht auf [0,0], da fitBounds sie gleich ohnehin verschiebt
+        var mymap = L.map('mapid').setView([0, 0], 2);
+
+        // 2. Hintergrundkarte (OpenStreetMap Deutschland) hinzufügen
+        L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'
+        }).addTo(mymap);
+
+        // 3. Deine GeoJSON-Daten (umgerechnet in WGS84)
+        var geojsonData = {
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [7.893121, 48.328322],
+                        [7.893121, 48.328322],
+                        [7.892331, 48.326771],
+                        [7.897939, 48.325510],
+                        [7.897997, 48.325550],
+                        [7.898514, 48.326305],
+                        [7.898543, 48.326305],
+                        [7.898914, 48.327022],
+                        [7.893121, 48.328322]
+                    ]]
+                },
+                "properties": {
+                    "Name": "Untersuchungsgebiet",
+                    "Area_ha": 8.18504
+                }
+            }]
+        };
+
+        // 4. Das Polygon zur Karte hinzufügen und stylen
+        var polygonLayer = L.geoJSON(geojsonData, {
+            style: {
+                color: "#e74c3c",    // Linienfarbe (Rot)
+                weight: 3,           // Linienstärke
+                fillColor: "#f1c40f", // Füllfarbe (Gelb/Orange)
+                fillOpacity: 0.5     // Deckkraft der Füllung
+            }
+        }).addTo(mymap);
+
+        // 5. Popup hinzufügen (zeigt die Fläche an)
+        polygonLayer.bindPopup("<strong>Untersuchungsgebiet</strong><br>Fläche: " + geojsonData.features[0].properties.Area_ha + " ha");
+
+        // 6. KARTENAUSSCHNITT ANPASSEN
+        // Dies sorgt dafür, dass die Karte sofort zum Polygon springt
+        mymap.fitBounds(polygonLayer.getBounds(), {
+            padding: [50, 50] // Kleiner Sicherheitsabstand zum Rand
+        });
+    </script>
+
+</body>
+</html>
