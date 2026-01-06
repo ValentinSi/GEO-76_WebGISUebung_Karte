@@ -3,55 +3,141 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karte Untersuchungsgebiet</title>
+    <title>Untersuchungsgebiet - Bachelorarbeit</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+
     <style>
-        /* Grundlegendes Design */
         body {
-            font-family: sans-serif;
+            font-family: 'Lato', sans-serif;
+            background-color: #f0f2f5; /* Leichtes Grau für den Hintergrund */
+            color: #333;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 40px 20px;
+            line-height: 1.6;
         }
 
-        /* Kartenbehälter: Wichtig, damit die Karte sichtbar ist */
-        #mapid {
-            width: 100%;
-            height: 600px;
-            border: 2px solid #333;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        /* Der Container zentriert den Inhalt und simuliert ein Blatt Papier */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Typografie für Überschriften */
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+            color: #2c3e50;
+            margin-top: 0;
         }
 
         h1 {
-            color: #333;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e74c3c; /* Rote Linie passend zum Polygon */
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify; /* Blocksatz wirkt oft wissenschaftlicher */
+            hyphens: auto; /* Automatische Silbentrennung */
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+
+        /* Karten-Design */
+        #mapid {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            z-index: 1; /* Sicherstellen, dass die Karte im Vordergrund bleibt */
+        }
+
+        /* Bildunterschrift für die Karte */
+        .figure-caption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 8px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Responsive Anpassung für Handys */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Untersuchungsgebiet</h1>
-    <p>Das in dieser Bachelorarbeit untersuchte Gebiet bemisst sich auf ca. 8.18 ha. Es befindet sich im südlichen Teil des Befliegungsgebietes „Hohberg“. Es ist eines von mehreren Drohnenbefliegungsgebieten der Kreisstadt Lahr/Schwarzwald in Baden-Württemberg, Deutschland, im westlichen Teil Mittleren Schwarzwaldes am Übergang zum Oberrheinischen Tiefland. 
-Der Wald im Untersuchungsgebiet ist hauptsächlich ein wirtschaftlich genutzter Submontaner Buchen-Tannen-Traubeneichen-Wald mit lokalen Verjüngungen (Quelle: <a href="https://www.fva-bw.de/fileadmin/scripts/forschung/wns/stoka/docs/Regionale_Gliederung_Karte.pdf">FVA - Forstliche Versuchs- und Forschungsanstalt Baden-Württemberg</a>) und ist Teil des Naturparks Schwarzwald Mitte/Nord. Der Bestand steht auf Oberen und Mittlerem Buntsandstein bis Tigersandstein-Formation.
-Die Karte zeigt das konvertierte Polygon (ehemals EPSG:25832) im Bereich Lahr/Schwarzwald.</p>
-    
-    <div id="mapid"></div>
+    <div class="container">
+        <h1>Untersuchungsgebiet</h1>
+        <h2>Bachelorarbeit: Baumsegmentierung und -klassifikation von Mischwald mit photogrammetrischen Punktwolken</h2>
+
+        <p>
+            Das in dieser Bachelorarbeit untersuchte Gebiet bemisst sich auf ca. 8,18 ha. Es befindet sich im südlichen Teil des Befliegungsgebietes „Hohberg“. Es ist eines von mehreren Drohnenbefliegungsgebieten der Kreisstadt Lahr/Schwarzwald in Baden-Württemberg, Deutschland, im westlichen Teil des Mittleren Schwarzwaldes am Übergang zum Oberrheinischen Tiefland. 
+            Der Wald im Untersuchungsgebiet ist hauptsächlich ein wirtschaftlich genutzter submontaner Buchen-Tannen-Traubeneichen-Wald mit lokalen Verjüngungen (Quelle: <a href="https://www.fva-bw.de/fileadmin/scripts/forschung/wns/stoka/docs/Regionale_Gliederung_Karte.pdf" target="_blank">FVA - Forstliche Versuchs- und Forschungsanstalt Baden-Württemberg</a>) und ist Teil des Naturparks Schwarzwald Mitte/Nord. Der Bestand steht auf Oberen und Mittlerem Buntsandstein bis Tigersandstein-Formation.
+        </p>
+
+        <h3>3D-Ansicht des Untersuchungsgebietes</h3>
+        <p>
+            Ergänzend zur zweidimensionalen Kartenansicht steht eine interaktive 3D-Visualisierung zur Verfügung.
+            <br><br>
+            &#10145; <strong><a href="https://valentinsi.github.io/GEO-76_WebGISUebung_Karte/BA_POI_3D-view.html" target="_blank">Hier klicken, um die interaktive 3D-Ansicht zu öffnen</a></strong>.
+        </p>
+
+        <h3>Geografische Lage</h3>
+        <div id="mapid"></div>
+        <div class="figure-caption">Abb. 1: Übersichtskarte des Untersuchungsgebietes (Quelle: Eigene Darstellung, OpenStreetMap).</div>
+
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <script>
-        // 1. Karte initialisieren 
-        // Wir setzen die Startansicht auf [0,0], da fitBounds sie gleich ohnehin verschiebt
+        // Karte initialisieren
         var mymap = L.map('mapid').setView([0, 0], 2);
 
-        // 2. Hintergrundkarte (OpenStreetMap Deutschland) hinzufügen
         L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'
         }).addTo(mymap);
 
-        // 3. Deine GeoJSON-Daten (umgerechnet in WGS84)
+        // GeoJSON Daten
         var geojsonData = {
             "type": "FeatureCollection",
             "features": [{
@@ -59,14 +145,10 @@ Die Karte zeigt das konvertierte Polygon (ehemals EPSG:25832) im Bereich Lahr/Sc
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [[
-                        [7.893121, 48.328322],
-                        [7.893121, 48.328322],
-                        [7.892331, 48.326771],
-                        [7.897939, 48.325510],
-                        [7.897997, 48.325550],
-                        [7.898514, 48.326305],
-                        [7.898543, 48.326305],
-                        [7.898914, 48.327022],
+                        [7.893121, 48.328322], [7.893121, 48.328322],
+                        [7.892331, 48.326771], [7.897939, 48.325510],
+                        [7.897997, 48.325550], [7.898514, 48.326305],
+                        [7.898543, 48.326305], [7.898914, 48.327022],
                         [7.893121, 48.328322]
                     ]]
                 },
@@ -77,23 +159,22 @@ Die Karte zeigt das konvertierte Polygon (ehemals EPSG:25832) im Bereich Lahr/Sc
             }]
         };
 
-        // 4. Das Polygon zur Karte hinzufügen und stylen
+        // Layer stylen und hinzufügen
         var polygonLayer = L.geoJSON(geojsonData, {
             style: {
-                color: "#e74c3c",    // Linienfarbe (Rot)
-                weight: 3,           // Linienstärke
-                fillColor: "#f1c40f", // Füllfarbe (Gelb/Orange)
-                fillOpacity: 0.5     // Deckkraft der Füllung
+                color: "#e74c3c",    
+                weight: 2,           
+                fillColor: "#f1c40f", 
+                fillOpacity: 0.4      
             }
         }).addTo(mymap);
 
-        // 5. Popup hinzufügen (zeigt die Fläche an)
+        // Popup
         polygonLayer.bindPopup("<strong>Untersuchungsgebiet</strong><br>Fläche: " + geojsonData.features[0].properties.Area_ha + " ha");
 
-        // 6. KARTENAUSSCHNITT ANPASSEN
-        // Dies sorgt dafür, dass die Karte sofort zum Polygon springt
+        // Zoom auf das Gebiet
         mymap.fitBounds(polygonLayer.getBounds(), {
-            padding: [50, 50] // Kleiner Sicherheitsabstand zum Rand
+            padding: [20, 20] 
         });
     </script>
 
